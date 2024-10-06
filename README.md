@@ -1,5 +1,8 @@
 <h1>Threat Intel Discord Bot</h1>
-> Powered by <a href="https://www.virustotal.com/gui/home/upload">VirusTotal</a>
+
+  ![encryption](https://github.com/user-attachments/assets/aa6070c4-d7e9-46fd-b846-026eda3c3c52)
+  
+Powered by <a href="https://www.virustotal.com/gui/home/upload">VirusTotal</a>
 <br><br>
 This Discord bot integrates with the VirusTotal API to provide security intelligence for file hashes and IP addresses. Users can query the bot using commands like /vt <hash or IP> to retrieve reports in their Discord channels.
 <br><br>

@@ -5,6 +5,7 @@ This Discord bot integrates with the VirusTotal API to provide security intellig
 <br><br>
 For file hashes, the bot returns information such as file reputation, malicious detections, and scan dates. For IP addresses, it checks whether the IP is private or public, and for public IPs, it retrieves data like malicious activity, associated URLs, and country.
 <br><br>
+You can get your own VirusTotal API key at: [https://www.virustotal.com/gui/sign-in]
 <h2>Use Examples</h2>
 <img src="https://github.com/user-attachments/assets/31ece941-ad4e-4107-9ebc-4d83b0a4d3c1"/>
 

@@ -4,7 +4,7 @@ import discord
 from datetime import datetime
 import ipaddress
 
-# VT Key
+# VT API
 VIRUSTOTAL_API_KEY = os.environ['vt_key']
 
 # Set up Discord bot intents
@@ -14,7 +14,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 
-# Hash value query
+# API Hash
 def get_vt_hash_info(hash_value):
     url = f'https://www.virustotal.com/api/v3/files/{hash_value}'
     headers = {'x-apikey': VIRUSTOTAL_API_KEY}
@@ -26,7 +26,7 @@ def get_vt_hash_info(hash_value):
         return None
 
 
-# IP address query
+# API IP Address
 def get_vt_ip_info(ip_address):
     url = f'https://www.virustotal.com/api/v3/ip_addresses/{ip_address}'
     headers = {'x-apikey': VIRUSTOTAL_API_KEY}
@@ -38,7 +38,7 @@ def get_vt_ip_info(ip_address):
         return None
 
 
-# Function to check if an IP is private or public
+# Check for private IP addresses
 def is_private_ip(ip):
     try:
         ip_obj = ipaddress.ip_address(ip)
@@ -47,6 +47,7 @@ def is_private_ip(ip):
         return None  # Invalid IP address
 
 
+# Timestamp display
 def format_timestamp(unix_timestamp):
     if unix_timestamp is None or unix_timestamp == 'N/A':
         return 'N/A'
@@ -56,7 +57,7 @@ def format_timestamp(unix_timestamp):
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('{0.user} is online.'.format(client))
 
 
 @client.event
@@ -65,7 +66,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    # Good for testing the status of the bot
+    # Respond ping test
     if message.content.startswith('/exo'):
         await message.channel.send('Exo Intelligence is online.')
 
@@ -127,6 +128,10 @@ async def on_message(message):
                     file_type = file_info.get('type_description', 'Unknown')
                     reputation = file_info.get('reputation', 'N/A')
 
+                    # File signature information
+                    signature_info = file_info.get('signature_info', {})
+                    signer_name = signature_info.get('signers', ['Unknown'])[0]
+                    
                     response_msg = f"**Threat Intel Report for:** `{input_value}`\n\n"
                     response_msg += f"**File Name:** {file_info.get('meaningful_name', 'Unknown')}\n"
                     response_msg += f"**Malicious Detections:** {positives}/{total}\n"
@@ -136,6 +141,7 @@ async def on_message(message):
                     response_msg += f"**Last Scan Date:** {last_scan_date}\n"
                     response_msg += f"**First Submission Date:** {first_submission_date}\n"
                     response_msg += f"**SHA256:** {file_info.get('sha256', 'N/A')}\n"
+                    response_msg += f"**File Signer:** {signer_name}\n"  # Added signer information
 
                     if positives > 0:
                         response_msg += "\n```⚠️Proceed with caution, malicious results were found for this value.```"
@@ -162,7 +168,7 @@ except discord.HTTPException as e:
             "The Discord servers denied the connection for making too many requests"
         )
         print(
-            "https://stackoverflow.com/questions/66724687/in-discord-py-how-to-solve-the-error-for-toomanyrequests"
+            "Get help from https://stackoverflow.com/questions/66724687/in-discord-py-how-to-solve-the-error-for-toomanyrequests"
         )
     else:
         raise e
